@@ -341,15 +341,21 @@ if ($UsePSResourceGet)
 
             $expandArchiveParameters = @{
                 Path            = $psResourceGetZipArchivePath
-                DestinationPath = "$PSDependTarget/$psResourceGetModuleName"
+                OutputPath = "$PSDependTarget/$psResourceGetModuleName"
                 Force           = $true
             }
 
+            if (-not (Test-Path -Path $expandArchiveParameters.OutputPath -PathType 'Container'))
+            {
+                New-Item -Path $expandArchiveParameters.OutputPath -ItemType 'Directory' -Force
+            }
+
+            Write-Debug -Message ('Extracting {0} to {1}' -f $psResourceGetZipArchivePath, $expandArchiveParameters.OutputPath)
             Expand-Archive @expandArchiveParameters
 
             Remove-Item -Path $psResourceGetZipArchivePath
 
-            Import-Module -Name $expandArchiveParameters.DestinationPath -Force
+            Import-Module -Name $expandArchiveParameters.OutputPath -Force
 
             # Successfully bootstrapped PSResourceGet, so let's use it.
             $UsePSResourceGet = $true
@@ -359,7 +365,6 @@ if ($UsePSResourceGet)
     if ($UsePSResourceGet)
     {
         $psResourceGetModule = Get-Module -Name $psResourceGetModuleName
-
         $psResourceGetModuleVersion = $psResourceGetModule.Version.ToString()
 
         if ($psResourceGetModule.PrivateData.PSData.Prerelease)
