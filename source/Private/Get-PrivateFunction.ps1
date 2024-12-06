@@ -1,5 +1,4 @@
-function Get-PrivateFunction
-{
+function Get-PrivateFunction {
     <#
       .SYNOPSIS
       This is a sample Private function only visible within the module.
@@ -16,16 +15,13 @@ function Get-PrivateFunction
       #>
     [cmdletBinding()]
     [OutputType([string])]
-    param
-    (
+    param (
         [Parameter()]
         [String]
         $PrivateData
     )
 
-    process
-    {
+    process {
         Write-Output $PrivateData
     }
-
 }

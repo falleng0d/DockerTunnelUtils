@@ -1,5 +1,4 @@
-function Get-Something
-{
+function Get-Something {
     <#
       .SYNOPSIS
       Sample Function to return input string.
@@ -15,27 +14,20 @@ function Get-Something
       The Data parameter is the data that will be returned without transformation.
 
     #>
-    [cmdletBinding(
-        SupportsShouldProcess = $true,
-        ConfirmImpact = 'Low'
-    )]
-    param
-    (
+    [cmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Low')]
+    param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [String]
         $Data
     )
 
-    process
-    {
-        if ($pscmdlet.ShouldProcess($Data))
-        {
+    process {
+        if ( $pscmdlet.ShouldProcess($Data)) {
             Write-Verbose ('Returning the data: {0}' -f $Data)
             Get-PrivateFunction -PrivateData $Data
-        }
-        else
-        {
+        } else {
             Write-Verbose 'oh dear'
         }
     }
 }
+#
